@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Dart <-> Google Drive</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <style type="text/css">
+      /* Slideshow styles */
+    </style>
+    <link rel="stylesheet" href="/style/font-awesome/css/font-awesome.min.css">
+    <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+# Dart <-> Google Drive
+
+---
+
+# Google APIs?
+
+[Google APIs Explorer](https://developers.google.com/apis-explorer/)
+
+# Custom APIS?
+
+[Custom APIs Explorer](http://dart-gdg-nyc-462.appspot.com/_ah/api/explorer)
+
+---
+
+# Dart <-> Discovery API
+
+[Discovery API Dart Client Generator](https://github.com/dart-gde/discovery_api_dart_client_generator)
+
+---
+
+# OAuth2 Flow
+
+```dart
+var auth = new oauth.GoogleOAuth2(CLIENT_ID, SCOPES);
+auth.login().then((oauth.Token token){
+  // handle token
+});
+```
+
+<div class="oauth"></div>
+
+---
+
+# Insert File
+
+```dart
+var auth = new oauth.SimpleOAuth2(token.data);
+var drive = new Drive(auth);
+var body = {
+    'title': fileName,
+    'mimeType': "application/vnd.google-apps.document"
+};
+drivelib.File file = new drivelib.File.fromJson(body);
+drive.files.insert(file).then((drivelib.File newFile){
+  // handle newFile
+});
+```
+
+<div class="insert"></div>
+
+---
+
+# Get File
+
+```dart
+drive.files.get(fileId).then((drivelib.File rtrvdFile){
+  // handle rtrvdFile
+});
+```
+
+<div class="load"></div>
+
+---
+
+# Copy File
+
+```dart
+drive.files.get(fileId).then((drivelib.File rtrvdFile){
+  drive.files.copy(rtrvdFile, fileId).then((drivelib.File copiedFile){
+    // handle copiedFile
+  });
+});
+```
+
+<div class="copy"></div>
+
+---
+
+# Add Comments
+
+```dart
+drive.files.get(fileId).then((drivelib.File rtrvdFile){
+  var comment = new drivelib.Comment.fromJson({'content':content});
+  drive.comments.insert(comment, rtrvdFile.id).then((drivelib.Comment comment){
+     // handle comment
+  });
+});
+```
+
+<div class="comments"></div>
+
+---
+
+# Revision History
+
+```dart
+drive.files.get(fileId).then((drivelib.File rtrvdFile){
+  drive.revisions.list(rtrvdFile.id).then((revisions){
+    // handle revisions
+  });
+});
+```
+
+<div class="rev"></div>
+
+---
+
+# Custom Discovery API
+
+```dart
+var client = new Helloworld();
+client.greetings.listGreeting().then((collection){
+  collection.items.forEach((greeting){
+    // handle greeting
+  });
+});
+```
+
+<div class="custom"></div>
+
+    </textarea>
+    <script src="/js/remark-0.5.9.min.js" type="text/javascript">
+    </script>
+    <script type="text/javascript">
+      var slideshow = remark.create();
+    </script>
+    <!-- Dart Version -->
+    <!-- <script type="text/javascript" src="/js/packages/browser/interop.js"></script>
+    <script type="application/dart" src="/js/main.dart"></script>
+    <script src="/js/packages/browser/dart.js"></script> -->
+
+    <!-- Javascript Version -->
+    <script type="text/javascript" src="/js/interop.js"></script>
+    <script type="text/javascript" src="/js/main.dart.js"></script>
+    <script type="text/javascript" src="/js/dart.js"></script>
+  </body>
+</html>

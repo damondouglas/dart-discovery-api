@@ -1,0 +1,5 @@
+name: dda
+description: Using Dart to interface Googe Discovery API.
+dependencies:
+  browser: any
+  google_drive_v2_api: any
